@@ -1,0 +1,14 @@
+Minimal setup instructions
+--------------------------
+- Create a ipip tunnel called tun44 with your ampr address used by the gateway and with netmask /32
+  (The /32 mask is important. DO NOT set your alocated prefixmask, always use /32)
+
+- Place the archive on a web local server
+- SSH to your router
+- become 'root' by issuing 'sudo su'
+- change to your home folder by typing 'cd'
+- get the archive using curl http://<your server and path>/Ampr_EdgeRouter.tgz > Ampr_EdgeRouter.tgz
+- unpack locally using tar -xf Ampr_EdgeRouter.tgz
+- run './install.sh'
+- edit /etc/ampr.sh and adapt the last line to your needs: vi /etc/ampr.sh
+- restart your router

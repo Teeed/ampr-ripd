@@ -1,0 +1,25 @@
+#
+# IPIP tunnel & ampr-ripd startup example via /etc/network/interfaces
+#
+#
+# - Tunnel interface is named 'ampr0'
+# - Local WAN IP is 192.168.0.2 on eth1
+# - AMPR routing table used is table 'default'
+# - gateway IP is 44.128.0.1
+#
+
+auto ampr0
+iface ampr0 inet static
+address 44.128.0.1
+netmask 255.255.255.255
+metric 100
+pre-up ip tun add ampr0 mode ipip ttl 64 local 192.168.0.2 dev eth1
+up ip route add default via 169.228.34.84 dev ampr0 onlink table default
+up ip rule add from 44.128.0.1 table default
+up ampr-ripd -s -t default -i ampr0 -m 90 -a 44.128.0.0/24
+up ping -c 1 -I ampr0 44.0.0.1 > /dev/null 2>&1
+pre-down ip route del default via 169.228.34.84 dev ampr0 onlink table default
+post-down killall ampr-ripd
+post-down ip rule del from 44.128.0.1 table default
+post-down ip tunnel del ampr0
+post-down rmmod ipip

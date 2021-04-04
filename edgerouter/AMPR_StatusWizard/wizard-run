@@ -1,0 +1,84 @@
+#/bin/bash
+
+ACTION=$1
+INPUT=$2
+
+
+load () {
+
+    IFS=' '
+    ps_status=`ps -A | grep "ampr-ripd" | awk '{ print $1,$4 }'`
+    read -a status_array <<< "$ps_status"
+    d_status=''
+    r_count=''
+
+    if [ -f "/usr/sbin/ampr-ripd" ]
+    then
+        d_status+="Installed, "
+
+        if [ ${status_array[0]} ]
+        then
+            d_status+="running PID ${status_array[0]}"
+        else
+            d_status+="not running"
+        fi
+    else
+        d_status+="Not Installed"
+    fi
+
+    status="{\"rstatus\":\"$d_status\"}"
+
+    rcount=`ip route list table default | grep -c "tun44"`
+
+    if [ $rcount -ne 0 ]
+    then
+        status+=",{\"rstatus\":\"Routes: $rcount\"}"
+    fi
+
+    statics=`ip route list table main | grep "44." | awk '{ print $1","$3 }'`
+    IFS=','
+    static=''
+    while read -ra data; do
+        [ -n "$static" ] && static+=','
+        static+="{\"enet\":\"${data[0]}\",\"egw\":\"${data[1]}\"}"
+    done <<< "$statics"
+
+    bypasses=`ip route list table default | grep -v "tun44" | awk '{ print $1","$3 }'`
+    IFS=','
+    bypass=''
+    while read -ra data; do
+        [ -n "$bypass" ] && bypass+=','
+        bypass+="{\"enet\":\"${data[0]}\",\"egw\":\"${data[1]}\"}"
+    done <<< "$bypasses"
+
+
+    encaps=`ip route list table default | grep "tun44" | awk '{ print $1","$3 }'`
+    IFS=','
+    encap=''
+    while read -ra data; do
+        [ -n "$encap" ] && encap+=','
+        encap+="{\"enet\":\"${data[0]}\",\"egw\":\"${data[1]}\"}"
+    done <<< "$encaps"
+
+    echo "{\"success\":\"1\",\"data\":{\"ripd-status\":[$status],\"static\":[$static],\"bypass\":[$bypass],\"encap\":[$encap]}}"
+}
+
+delete () {
+    echo  "{\"success\":\"0\"}"
+}
+
+apply () {
+    echo  "{\"success\":\"0\"}"
+}
+
+case "$ACTION" in
+load)
+  load
+  ;;
+delete)
+  delete
+  ;;
+apply)
+  apply
+  ;;
+esac

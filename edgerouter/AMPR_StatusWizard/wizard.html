@@ -1,0 +1,61 @@
+<div class="instructions">
+  AMPR RIP Daemon Setup
+</div>
+
+<fieldset name="ripd-status" class="primary expanded">
+  <legend>AMPR ripd status</legend>
+  <div class="addable" data-object="ripd-status" data-objectify="1">
+    <div class="addable-template">
+      <div><input disabled type="text" name="rstatus" style="border:none;background:none;color:dimgray;padding:0;width:300px;"/></div>
+    </div>
+    <table class="addable-container">
+      <!-- status will be inserted here -->
+    </table>
+    <button disabled type="button" class="addable-add hidden"></button>
+  </div>
+</fieldset>
+
+<fieldset name="static" class="primary">
+  <legend>Static routes</legend>
+  <div class="addable" data-object="static" data-objectify="1">
+    <div class="addable-template">
+      <div><input disabled type="text" name="enet" style="border:none;background:none;color:dimgray;padding:0;width:100px;"/></div>
+      <div><input disabled type="text" name="egw" style="border:none;background:none;color:dimgray;padding:0;"/></div>
+    </div>
+    <table class="addable-container">
+      <tr style="border-bottom:1px solid #d0d0d0;"><th>AMPR Subnet</th><th>Interface/Gateway Address</th></tr>
+      <!-- static routes will be inserted here -->
+    </table>
+    <button disabled type="button" class="addable-add hidden"></button>
+  </div>
+</fieldset>
+
+<fieldset name="bypass" class="primary">
+  <legend>Bypass routes</legend>
+  <div class="addable" data-object="bypass" data-objectify="1">
+    <div class="addable-template">
+      <div><input disabled type="text" name="enet" style="border:none;background:none;color:dimgray;padding:0;width:100px;"/></div>
+      <div><input disabled type="text" name="egw" style="border:none;background:none;color:dimgray;padding:0;"/></div>
+    </div>
+    <table class="addable-container">
+      <tr style="border-bottom:1px solid #d0d0d0;"><th>AMPR Subnet</th><th>Gateway Address</th></tr>
+      <!-- bypass routes will be inserted here -->
+    </table>
+    <button disabled type="button" class="addable-add hidden"></button>
+  </div>
+</fieldset>
+
+<fieldset name="encap" class="primary">
+  <legend>AMPR routes</legend>
+  <div class="addable" data-object="encap" data-objectify="1">
+    <div class="addable-template">
+      <div><input disabled type="text" name="enet" style="border:none;background:none;color:dimgray;padding:0;width:100px;"/></div>
+      <div><input disabled type="text" name="egw" style="border:none;background:none;color:dimgray;padding:0;"/></div>
+    </div>
+    <table class="addable-container">
+      <tr style="border-bottom:1px solid #d0d0d0;"><th>AMPR Subnet</th><th>Gateway Address</th></tr>
+      <!-- dynamic mappings will be inserted here -->
+    </table>
+    <button disabled type="button" class="addable-add hidden"></button>
+  </div>
+</fieldset>
