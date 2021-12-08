@@ -1,8 +1,8 @@
- ********************************************************************
- *                                                                  *
- *  ampr-ripd.c - AMPR 44net RIPv2 Listner and Route Injector v2.4  *
- *                                                                  *
- ********************************************************************
+ *********************************************************************
+ *                                                                   *
+ *  ampr-ripd.c - AMPR 44net RIPv2 Listner and Route Injector v2.4.1 *
+ *                                                                   *
+ *********************************************************************
 
  Author: Marius Petrescu, YO2LOJ, <marius@yo2loj.ro>
 
@@ -129,6 +129,8 @@
  *    2.4     15.Aug.2017      Corrected a segfault in NL handling on some systems (Tnx. Steve, VK5ASF & Bent, OZ6BL)
  *                             Corrected a segfault on SIGHUP if call home not set (Tnx. Steve, VK5ASF & Bent, OZ6BL)
  *                             Improved command line handling
+ *    2.4.1    8.Dec.2021      Corrected a bug in netlink debug code (tnx. Daniele, IU5HKX)
+ *                             It should not impact regular compiles without NL_DEBUG.
 
  INSTALLATION
  ------------

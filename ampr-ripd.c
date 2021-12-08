@@ -1,5 +1,5 @@
 /*
- * ampr-ripd.c - AMPR 44net RIPv2 Listner Version 2.4
+ * ampr-ripd.c - AMPR 44net RIPv2 Listner Version 2.4.1
  *
  * Author: Marius Petrescu, YO2LOJ, <marius@yo2loj.ro>
  *
@@ -111,6 +111,8 @@
  *    2.4     15.Aug.2017    Corrected a segfault in NL handling on some systems (Tnx. Steve, VK5ASF & Bent, OZ6BL)
  *                           Corrected a segfault on SIGHUP if call home not set (Tnx. Steve, VK5ASF & Bent, OZ6BL)
  *                           Improved command line handling
+ *    2.4.1    8.Dec.2021    Corrected a bug in netlink debug code (tnx. Daniele, IU5HKX)
+ *                           It should not impact regular compiles without NL_DEBUG.
  */
 
 #include <stdlib.h>
@@ -137,7 +139,7 @@
 #include <time.h>
 #include <ctype.h>
 
-#define AMPR_RIPD_VERSION	"2.4"
+#define AMPR_RIPD_VERSION	"2.4.1"
 
 #define RTSIZE		1000	/* maximum number of route entries */
 #define EXPTIME		600	/* route expiration in seconds */
@@ -998,7 +1000,7 @@ void nl_debug(void *msg, int len)
 		
 		    for (i=0; i<((struct nlmsghdr *)msg)->nlmsg_len; i++)
 		    {
-			c = (unsigned char *)&msg;
+			c = (unsigned char *)msg;
 			fprintf(stderr, "%u ", c[i]);
 		    }
 		    fprintf(stderr, "\n");
