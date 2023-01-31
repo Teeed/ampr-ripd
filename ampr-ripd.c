@@ -111,6 +111,7 @@
  *    2.4     15.Aug.2017    Corrected a segfault in NL handling on some systems (Tnx. Steve, VK5ASF & Bent, OZ6BL)
  *                           Corrected a segfault on SIGHUP if call home not set (Tnx. Steve, VK5ASF & Bent, OZ6BL)
  *                           Improved command line handling
+ *    2.4     20.Nov.2019    Added route filter to prevent route injecton (SP9TED)
  *    2.4.1    8.Dec.2021    Corrected a bug in netlink debug code (tnx. Daniele, IU5HKX)
  *                           It should not impact regular compiles without NL_DEBUG.
  */
@@ -1390,6 +1391,17 @@ void process_entry(char *buf)
 		fprintf(stderr, "metric %d", ntohl(rip->metric));
 	}
 #endif
+
+	/* security check (only accept 44.0.0.0/8 routes */
+	/* TODO: edianess */
+	const uint32_t check_44netmask = inet_addr("255.0.0.0");
+	const uint32_t check_44netaddr = inet_addr("44.0.0.0");
+	if((rip->address & check_44netmask) != check_44netaddr || netmask < 8)
+	{
+		if (debug && verbose) fprintf(stderr, " - invalid (not 44net)\n");
+
+		return;
+	}
 
 	/* adjust and set 44.0.0.1 entry */
 	if (rip->address == inet_addr("44.0.0.1"))
